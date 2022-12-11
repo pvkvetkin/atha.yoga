@@ -1,5 +1,18 @@
-from django.contrib import admin
 from .models import User
+from django.contrib import admin
+from django.contrib.admin.forms import AdminAuthenticationForm
+
+from snowpenguin.django.recaptcha3.fields import ReCaptchaField
+from snowpenguin.django.recaptcha3.widgets import ReCaptchaHiddenInput
+
+
+class CaptchaAdminAuthenticationForm(AdminAuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super(CaptchaAdminAuthenticationForm, self).__init__(*args, **kwargs)
+        self.fields['captcha'] = ReCaptchaField(widget=ReCaptchaHiddenInput())
+
+
+admin.AdminSite.login_form = CaptchaAdminAuthenticationForm
 
 
 @admin.register(User)

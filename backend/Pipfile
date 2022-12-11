@@ -20,6 +20,7 @@ djangorestframework-simplejwt = "*"
 django-extensions = "*"
 django-elasticsearch-dsl = "*"
 types-pytz = "*"
+django-recaptcha3 = "*"
 
 [dev-packages]
 isort = "*"
