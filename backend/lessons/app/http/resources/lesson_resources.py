@@ -16,6 +16,15 @@ class ScheduleResource(ModelSerializer):
 class LessonResource(ModelSerializer):
     schedules = ScheduleResource(many=True)
 
+    def to_representation(self, instance):
+        result = super().to_representation(instance=instance)
+        teacher = result["teacher"]
+        current_user = self.context.get('user')
+        if current_user == teacher:
+            result["link"] = instance.link
+            result["link_info"] = instance.link_info
+        return result
+
     class Meta:
         model = Lesson
         fields = [
