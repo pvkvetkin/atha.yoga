@@ -80,7 +80,7 @@ class FavoriteLessonAddHandler(GenericAPIView):
             user=self.request.user, lesson_id=data.validated_data["lesson_id"]
         ).add()
 
-        return Response({"data": LessonResource(lesson).data})
+        return Response({"data": LessonResource(lesson, context={"user": self.request.user.pk}).data})
 
 
 @permission_classes([IsAuthenticated])
@@ -95,11 +95,11 @@ class FavoriteLessonRemoveHandler(GenericAPIView):
             user=self.request.user, lesson_id=data.validated_data["lesson_id"]
         ).remove()
 
-        return Response({"data": LessonResource(lesson).data})
+        return Response({"data": LessonResource(lesson, context={"user": self.request.user.pk}).data})
 
 
 @permission_classes([IsAuthenticated])
 class FavoriteLessonListHandler(APIView):
     def get(self, *args: Any, **kwargs: Any) -> Response:
         lessons = LessonRepository().find_user_favorite_lessons(user=self.request.user)
-        return Response({"data": LessonResource(lessons, many=True).data})
+        return Response({"data": LessonResource(lessons, many=True, context={"user": self.request.user.pk}).data})
