@@ -50,7 +50,7 @@ class LessonCreateHandler(GenericAPIView):
             data=data.validated_data, user=self.request.user
         ).create()
 
-        return Response({"data": LessonResource(lesson).data})
+        return Response({"data": LessonResource(lesson, context={"user": self.request.user.pk}).data})
 
 
 @permission_classes([IsTeacher])
@@ -65,7 +65,7 @@ class LessonUpdateHandler(GenericAPIView):
             user=request.user, data=data.validated_data, pk=pk
         ).update()
 
-        return Response({"data": LessonResource(lesson).data})
+        return Response({"data": LessonResource(lesson, context={"user": self.request.user.pk}).data})
 
 
 @permission_classes([IsAuthenticated])
